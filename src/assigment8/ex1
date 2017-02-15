@@ -1,0 +1,16 @@
+1. INSERT INTO college VALUES ('Carnegie Mellon', 'PA', 11500);
+2. SELECT * FROM student WHERE sid not in (select sid from apply);
+   SELECT  sid, 'Carnegie Mellon', 'CS', null FROM student WHERE sid not in (select sid from apply);
+   INSERT into apply Select 'Carnegie Mellon', 'CS', null, sid FROM student WHERE sid not in (select sid from apply);
+   SELECT * FROM apply WHERE cname = 'Carnegie Mellon' ;
+3. SELECT * FROM apply WHERE major = 'EE' and decision = 'N'; 
+   SELECT sid, 'Carnegie Mellon', 'EE', 'Y' FROM apply WHERE major = 'EE' and decision = 'N' ;
+   Insert into apply SELECT 'Carnegie Mellon', 'EE', 'Y', sid FROM apply WHERE major = 'EE' and decision = 'N' 
+4, 5. SELECT sid FROM `apply` group by sid having count(distinct cname) > 2;
+	create temporary table temp as select sid from apply group by sid having count(distinct cname) > 2;
+	delete from apply where sid in (select sid from t1);delete from student where sid in (select sid from temp); 
+6. create temporary table temp as select cname from college where cname not in (select cname from apply where major = 'CS');
+	delete from apply where cname in (select cname from temp);
+	delete from college where cname in (select cname from temp);
+7. update apply, student set major = 'economics', decision = 'Y' where cname = 'Carnegie Mellon' and student.gpa < 3.6 and student.sid = apply.sid; 
+8. update apply set major = 'CS' where sid = (SELECT sid FROM student where gpa = (select max(gpa) from student));
